@@ -375,7 +375,7 @@ and view executed."
 
 It is turned on after command `webkit-eval-src-edit'.
 
-\\<\\<webkit-eval-edit-src-map>\\{webkit-eval-edit-buffer-map}>."
+\\<\\<webkit-eval-edit-src-map>\\{webkit-eval-edit-src-map}>."
   :lighter " webkit-edit"
   :keymap webkit-eval-edit-src-map
   :global nil

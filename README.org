@@ -36,7 +36,7 @@ Download the source code and put it wherever you like and add the directory to t
              :host github)
   :bind ((:map webkit-eval-results-map
                ("C-." . webkit-eval-show-next-result))
-         (:map webkit-eval-edit-buffer-map
+         (:map webkit-eval-edit-src-map
                ("C-c C-c" . webkit-eval-compile-and-eval)
                ("C-c '" . webkit-eval-compile-typescript-region-or-buffer)))
   :commands (webkit-eval-src-edit))
