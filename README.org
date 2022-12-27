@@ -1,0 +1,52 @@
+#+TITLE:README
+#+AUTHOR: Karim Aziiev
+#+EMAIL: karim.aziiev@gmail.com
+* webkit-eval
+
+Evaluate javascript or typescript in xwidgets.
+
+** Requirements
+
++ Emacs >= 27.1 compiled with xwidgets
++ xwidget
++ typescript
+
+** Installation
+
+*** Manual
+
+Download the source code and put it wherever you like and add the directory to the load path:
+
+#+begin_src elisp :eval no
+
+(add-to-list 'load-path "/path/to/webkit-eval")
+
+(require 'webkit-eval)
+
+#+end_src
+
+*** With use-package and straight
+
+#+begin_src elisp :eval no
+
+(use-package webkit-eval
+  :straight (webkit-eval
+             :repo "KarimAziev/webkit-eval"
+             :type git
+             :host github)
+  :bind ((:map webkit-eval-results-map
+               ("C-." . webkit-eval-show-next-result))
+         (:map webkit-eval-edit-buffer-map
+               ("C-c C-c" . webkit-eval-compile-and-eval)
+               ("C-c '" . webkit-eval-compile-typescript-region-or-buffer)))
+  :commands (webkit-eval-src-edit))
+
+#+end_src
+
+** Usage
+~M-x webkit-eval-src-edit~
+
+It will create temporary typescript file. When done run ~M-x webkit-eval-compile-and-eval~ to compile, eval and view results.
+Results are available in json format and in emacs-lisp-mode.
+
+Use command ~webkit-eval-show-next-result~ to cycle between this formats and view executed code.
