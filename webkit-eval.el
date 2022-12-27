@@ -367,8 +367,8 @@ and view executed."
    (let ((map
           (copy-keymap
            webkit-eval-results-map)))
-     (set-keymap-parent map (current-local-map))
-     map)))
+     (make-composed-keymap (list map)
+                           (current-local-map)))))
 
 (define-minor-mode webkit-eval-edit-src-mode
   "Minor mode for editing and evaluating typescript code in webkit session.
@@ -385,8 +385,8 @@ It is turned on after command `webkit-eval-src-edit'.
     (use-local-map
      (let ((map (copy-keymap
                  webkit-eval-edit-src-map)))
-       (set-keymap-parent map (current-local-map))
-       map))))
+       (use-local-map (make-composed-keymap (list map)
+                                            (current-local-map)))))))
 
 ;;;###autoload
 (defun webkit-eval-src-edit ()
