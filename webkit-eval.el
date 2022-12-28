@@ -34,12 +34,12 @@
 (defcustom webkit-eval-default-url "https://www.emacswiki.org"
   "Url to open when there are no active session."
   :type 'string
-  :group 'webkit-)
+  :group 'webkit-eval)
 
 (defcustom webkit-eval-elisp-format 'pp-to-string
   "Function to format emacs-lisp-code code."
   :type 'function
-  :group 'webkit-)
+  :group 'webkit-eval)
 
 (defvar webkit-eval-edit-src-map
   (let ((map (make-sparse-keymap)))
