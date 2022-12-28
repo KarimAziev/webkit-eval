@@ -30,12 +30,13 @@
 ;;; Code:
 
 (require 'xwidget)
+
 (defcustom webkit-eval-default-url "https://www.emacswiki.org"
   "Url to open when there are no active session."
   :type 'string
   :group 'webkit-)
 
-(defcustom webkit-eval-elisp-format 'prettier-elisp-to-string
+(defcustom webkit-eval-elisp-format 'pp-to-string
   "Function to format emacs-lisp-code code."
   :type 'function
   :group 'webkit-)
@@ -343,6 +344,7 @@ If CODE is non-nil, replace contents with CODE."
               (substitute-command-keys
                "\\<webkit-eval-edit-src-map>\
         Use `\\[webkit-eval-compile-and-eval]' to compile and eval, `\\[webkit-eval-compile-typescript-region-or-buffer]' to compile"))
+        (webkit-eval-edit-src-mode)
         (current-buffer)))))
 
 (define-minor-mode webkit-eval-results-mode
