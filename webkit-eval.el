@@ -7,6 +7,7 @@
 ;; Version: 0.1.0
 ;; Keywords: lisp
 ;; Package-Requires: ((emacs "27.1"))
+;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -57,13 +58,13 @@
 
 (defvar webkit-eval-edit-src-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-c C-c") 'webkit-eval-compile-and-eval)
+    (define-key map (kbd "C-c C-c") #'webkit-eval-compile-and-eval)
     (define-key map (kbd "C-c '")
-                'webkit-eval-compile-typescript-region-or-buffer)
+                #'webkit-eval-compile-typescript-region-or-buffer)
     (define-key map (kbd "C-c C-p")
-                'webkit-eval-prev-history-element)
+                #'webkit-eval-prev-history-element)
     (define-key map (kbd "C-c C-n")
-                'webkit-eval-next-history-element)
+                #'webkit-eval-next-history-element)
     map)
   "Keymap for `webkit-eval-edit-src-mode'.")
 
@@ -81,7 +82,7 @@
     (setq webkit-eval-history-idx next-idx)
     (nth webkit-eval-history-idx webkit-eval-history)))
 
-;;;###autoload
+
 (defun webkit-eval-prev-history-element ()
   "Insert previous history content."
   (interactive)
@@ -91,7 +92,7 @@
     (save-excursion
       (insert str))))
 
-;;;###autoload
+
 (defun webkit-eval-next-history-element ()
   "Insert next history content."
   (interactive)
@@ -213,6 +214,7 @@
         (seq-find #'cdr
                   (remove current alist)))))
 
+
 (defun webkit-eval-show-next-result ()
   "Show result in other mode."
   (interactive)
@@ -286,7 +288,7 @@ If windows doesn't exists, split current window."
   (when-let ((xwidget-buff (car (webkit-eval-buffers-in-mode
                                  'xwidget-webkit-mode
                                  (mapcar
-                                  'window-buffer
+                                  #'window-buffer
                                   (window-list))))))
     (get-buffer-window xwidget-buff)))
 
@@ -342,11 +344,13 @@ of buffer's ORIG-BUFF window or selected window."
                              (split-window-right)))
           (pop-to-buffer-same-window buff))))))
 
+;;;###autoload
 (defun webkit-eval-compile-and-eval ()
   "Eval and compile active region or current buffer in webkit session."
   (interactive)
   (webkit-eval-region-or-buffer t))
 
+;;;###autoload
 (defun webkit-eval-region-or-buffer (&optional compile)
   "Execute active region or buffer in current webkit session.
 With `prefix-arg' COMPILE, also compile it with tsc."
@@ -358,6 +362,7 @@ With `prefix-arg' COMPILE, also compile it with tsc."
                                                           (point-max)))
                       compile))
 
+;;;###autoload
 (defun webkit-eval-string (&optional code compile)
   "Eval CODE in current webkit session.
 If COMPILE is non-nil, also compile it with tsc."
@@ -490,6 +495,7 @@ If CODE is non-nil, replace contents with CODE."
         (webkit-eval-edit-src-mode)
         (current-buffer)))))
 
+;;;###autoload
 (define-minor-mode webkit-eval-results-mode
   "Minor mode for displaying results in xwidgets.
 Results are available in json format and in `emacs-lisp-mode'.
@@ -517,6 +523,7 @@ and view executed."
     (setq header-line-format
           nil)))
 
+;;;###autoload
 (define-minor-mode webkit-eval-edit-src-mode
   "Minor mode for editing and evaluating typescript code in webkit session.
 
@@ -527,17 +534,13 @@ It is turned on after command `webkit-eval-src-edit'.
   :keymap webkit-eval-edit-src-map
   :global nil
   (if webkit-eval-edit-src-mode
-      (progn (use-local-map
-              (let ((map (copy-keymap
-                          webkit-eval-edit-src-map)))
-                (use-local-map (make-composed-keymap (list map)
-                                                     (current-local-map)))))
-             (setq header-line-format
-                   (substitute-command-keys
-                    "\\<webkit-eval-edit-src-map>\
-        Use `\\[webkit-eval-compile-and-eval]' to compile and eval, `\\[webkit-eval-compile-typescript-region-or-buffer]' to compile")))
+      (setq header-line-format
+            (substitute-command-keys
+             "\\<webkit-eval-edit-src-map>\
+        Use `\\[webkit-eval-compile-and-eval]' to compile and eval, `\\[webkit-eval-compile-typescript-region-or-buffer]' to compile"))
     (setq header-line-format
           nil)))
+
 
 ;;;###autoload
 (defun webkit-eval-src-edit ()
