@@ -6,7 +6,7 @@
 ;; URL: https://github.com/KarimAziev/webkit-eval
 ;; Version: 0.1.0
 ;; Keywords: lisp
-;; Package-Requires: ((emacs "27.1"))
+;; Package-Requires: ((emacs "29.1"))
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;; This file is NOT part of GNU Emacs.
@@ -68,6 +68,7 @@
     map)
   "Keymap for `webkit-eval-edit-src-mode'.")
 
+
 (defvar webkit-eval-history-idx 0)
 
 (defun webkit-eval-get-next-or-prev-history (n)
@@ -110,7 +111,7 @@
 
 (defvar webkit-eval-results-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-.") 'webkit-eval-show-next-result)
+    (define-key map (kbd "C-.") #'webkit-eval-show-next-result)
     map))
 
 (defvar webkit-eval-js-function-wrapper
@@ -452,7 +453,13 @@ If COMPILE is non nil also compile CODE."
               (let ((alist
                      `((,(webkit-eval-get-mode-by-file-ext "ts") .
                         ,(webkit-eval-fontify result
-                                              'typescript-mode)))))
+                                              (if (treesit-available-p)
+                                                  (progn
+                                                    (require 'typescript-ts-mode)
+                                                    'typescript-ts-mode)
+                                                (progn
+                                                  (require 'typescript-mode)
+                                                  'typescript-mode)))))))
                 (setq buffer-read-only t)
                 (let ((inhibit-read-only t))
                   (when-let ((next
